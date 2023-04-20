@@ -41,7 +41,9 @@ app.get('/readexcelfile',(req,res)=>{
   let co3_dis=0;
   let co3_fc=0;
   let co3_pass=0;
-
+  let total1=0;
+  let total2=0;
+  let total3=0;
   let result={}
   for(i=0;i<256;i++)
   {
@@ -85,37 +87,167 @@ app.get('/readexcelfile',(req,res)=>{
       co3_pass=co3_pass+1;
     }
 
-    let i = 1;
-    let co1_dis_perc=co1_dis*100/255;
-    let co1_fc_perc=co1_fc*100/255;
-    let co1_pass_perc=co1_pass*100/255;
-
-    let co2_dis_perc=co2_dis*100/255;
-    let co2_fc_perc=co2_fc*100/255;
-    let co2_pass_perc=co2_pass*100/255;
-
-    let co3_dis_perc=co3_dis*100/255;
-    let co3_fc_perc=co3_fc*100/255;
-    let co3_pass_perc=co3_pass*100/255;
     
     
+    if(data[i].CO1!=0 && data[i].CO1!="")
+    {
+      total1=total1+1;
+    }
 
-
+    
+    if(data[i].CO2!=0 && data[i].CO2!="")
+    {
+      total2=total2+1;
+    }
+    
+    if(data[i].CO3!=0 && data[i].CO3!="")
+    {
+      total3=total3+1;
+    }
+    
   }
 
+  
+    let high_target=50;
+    let mid_target=63 ;
+    let low_target=82;
+    let co1_dis_perc=co1_dis*100/total1;
+    let co1_fc_perc=co1_fc*100/total1;
+    let co1_pass_perc=co1_pass*100/total1;
+    console.log(total1);
+    console.log(co1_dis_perc);
+    console.log(co1_fc_perc);
+    console.log(co1_pass_perc);
+
+    let co2_dis_perc=co2_dis*100/total2;
+    let co2_fc_perc=co2_fc*100/total2;
+    let co2_pass_perc=co2_pass*100/total2;
+    console.log(total2);
+    console.log(co2_dis_perc);
+    console.log(co2_fc_perc);
+    console.log(co2_pass_perc);
+
+    let co3_dis_perc=co3_dis*100/total3;
+    let co3_fc_perc=co3_fc*100/total3;
+    let co3_pass_perc=co3_pass*100/total3;
+    console.log(total3);
+    console.log(co3_dis_perc);
+    console.log(co3_fc_perc);
+    console.log(co3_pass_perc);
+    
+
+   let co1_att_highl=(co1_dis_perc/high_target)*3;
+   if(co1_att_highl>3)
+   {
+    co1_att_highl=3;
+   }
+   else{
+    co1_att_highl=co1_dis_perc/high_target;
+   }
+   let co1_att_midl=(co1_fc_perc/mid_target)*2;
+   if(co1_att_midl>2)
+   {
+    co1_att_midl=2;
+   }
+   else{
+    co1_att_highl=co1_dis_perc/high_target*2;
+   }
+
+   let co1_att_lowl=(co1_pass_perc/low_target);
+   if(co1_att_lowl>1)
+   {
+    co1_att_lowl=1;
+   }
+   else{
+    co1_att_highl=co1_dis_perc/high_target;
+   }
+   let co1_attainment=(co1_att_highl+co1_att_midl+co1_att_lowl)/6;
+
+   console.log(co1_att_highl);
+   console.log(co1_att_midl);
+   console.log(co1_att_lowl);
+   console.log(co1_attainment);
 
 
-    console.log(co1_dis);
-    console.log(co1_fc);
-    console.log(co1_pass);  
+   let co2_att_highl=(co2_dis_perc/high_target)*3;
+   if(co2_att_highl>3)
+   {
+    co2_att_highl=3;
+   }
+   else{
+    co2_att_highl=co2_dis_perc/high_target;
+   }
+   let co2_att_midl=(co2_fc_perc/mid_target)*2;
+   if(co2_att_midl>2)
+   {
+    co2_att_midl=2;
+   }
+   else{
+    co2_att_midl=co2_fc_perc/mid_target*2;
+   }
+   
+   let co2_att_lowl=(co2_pass_perc/low_target);
+   if(co2_att_lowl>1)
+   {
+     co2_att_lowl=1;
+    }
+   else{
+    co2_att_lowl=co2_pass_perc/low_target;
+   }
+    let co2_attainment=(co2_att_highl+co2_att_midl+co2_att_lowl)/6;
+    
+    console.log(co2_att_highl);
+    console.log(co2_att_midl);
+    console.log(co2_att_lowl);
+    console.log(co2_attainment);
 
-    console.log(co2_dis);
-    console.log(co2_fc);
-    console.log(co2_pass);
 
-    console.log(co3_dis);
-    console.log(co3_fc);
-    console.log(co3_pass);
+   let co3_att_highl=(co3_dis_perc/high_target)*3;
+   if(co3_att_highl>3)
+   {
+    co3_att_highl=3;
+   }
+   else{
+    co3_att_highl=co3_dis_perc/mid_target;
+   }
+   let co3_att_midl=(co3_fc_perc/mid_target)*2;
+   if(co3_att_midl>2)
+   {
+    co3_att_midl=2;
+   }
+   else{
+    co3_att_midl=co3_fc_perc/mid_target*2;
+   }
+   let co3_att_lowl=(co3_pass_perc/low_target);
+   if(co3_att_lowl>1)
+   {
+    co3_att_lowl=1;
+   }
+   else{
+    co3_att_lowl=co3_pass_perc/low_target;
+   }
+   let co3_attainment=(co3_att_highl+co3_att_midl+co3_att_lowl)/6;
+
+  console.log(co3_att_highl);
+   console.log(co3_att_midl);
+   console.log(co3_att_lowl);
+   console.log(co3_attainment);
+
+  
+
+
+
+    // console.log(co1_dis);
+    // console.log(co1_fc);
+    // console.log(co1_pass);  
+
+    // console.log(co2_dis);
+    // console.log(co2_fc);
+    // console.log(co2_pass);
+
+    // console.log(co3_dis);
+    // console.log(co3_fc);
+    // console.log(co3_pass);
 
 
 
