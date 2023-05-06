@@ -1,12 +1,12 @@
 const express=require('express')
 const multer= require("multer")
-const ExcelJS=require('exceljs')
 const hbs=require('hbs')
 const  path = require('path')
 const compute=require("./compute.js")
+const writeExcelFile=require("./excel.js")
+const upload=require("./uploadFile.js")
 
 const app=express()
-let co_final={};
 const port=process.env.PORT || 3000
 
 
@@ -25,109 +25,71 @@ app.set('views',viewsPAth)
 
 
 //setup static directory to serve
-
 // app.use(express.static(path.join(__dirname,'../public'))) 
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-console.log(path.join(__dirname,'../views/pdf.hbs'))
+// console.log(path.join(__dirname,'../views/pdf.hbs'))
 
 app.get('',(req,res)=>{
   res.render('home')
 })
 
 
-
-var storage = multer.diskStorage({
-    destination: 'publicfiles',
-    filename: function (req, file, callback) {
-        callback(null, file.originalname);
-    }
-});
-
-
-
-const upload=multer({
-  dest:'publicfiles',
-  storage:storage,
-  limits :{
-    fileSize:1000000
-  },
-  fileFilter(req,file,cb){
-
-    if(!file.originalname.match('xlsx')){
-      return cb(new Error('Please upload an xlsx'))
-    }
-    
-    cb(undefined,true)
-  }
-})
-
-const errorMiddleware =(req,res,next) =>{
-    throw new Error('From my middleware')
-} 
+// const errorMiddleware =(req,res,next) =>{
+//     throw new Error('From my middleware')
+// } 
 
 app.post('/submit',upload.array('upload',2), async(req,res)=>{
   
-  const h=req.body.uth
-  const m=req.body.utm
-  const l=req.body.utl
-  compute(h,m,l,co_final)
-  res.send()
+   res.render('generate')
+  console.log(req.files[0].filename)
+  //  console.log(req.files[1].filename)
+  console.log(req.body)
+  let co_final={
+    CO4:0.997881355932203,
+    CO5:0.997881355932203,
+    CO6:0.940775254924579,
+  };
+  let UA={
+    resultd:req.body.resultd,
+    targetd:req.body.targetd,
+    resultf:req.body.resultf,
+    targetf:req.body.targetf,
+    results:req.body.results,
+    targets:req.body.targets
+  }
+  compute(req.body.uth1,req.body.utm1,req.body.utl1,co_final,req.files[0].filename)
+  writeExcelFile(UA,co_final,req.body.subject)
+  // compute(req.body.uth2,req.body.utm2,req.body.utl2,co_final)
 },(error,req,res,next)=>{
    res.status(400).send({error:error.message})
 })
 
 
-app.post('/sheet',async(req,res)=>{
-  try{
-   // Requiring module
-// const reader = require('xlsx')
-
-// Reading our test file
-let workbook=new ExcelJS.Workbook()
-await workbook.xlsx.readFile('./test.xlsx')
-let worksheet=workbook.getWorksheet("Sheet1")
-
-let distinction = worksheet.getRow(3);
-let firstclass= worksheet.getRow(4);
-let secondclass = worksheet.getRow(5);
-
-distinction.getCell(2).value = 2;
-distinction.getCell(3).value = 2;
-distinction.getCell(5).value = 2;
-distinction.getCell(6).value = 2;
-
-firstclass.getCell(2).value = 2;
-firstclass.getCell(3).value = 2;
-firstclass.getCell(5).value = 2;
-firstclass.getCell(6).value = 2;
-
-
-secondclass.getCell(2).value = 2;
-secondclass.getCell(3).value = 2;
-secondclass.getCell(5).value = 2;
-secondclass.getCell(6).value = 2;
-
-
-distinction.commit()
-firstclass.commit()
-secondclass.commit()
-
- await workbook.xlsx.writeFile('./test.xlsx');
-
-    res.send('done');
-  }
-  catch(e){
-    res.status(400).send(e);
-  }
+app.get('/downloadExcel', function (req, res,next) {
+    const options = {
+        root: path.join(__dirname ,"../")
+    };
+ 
+    const fileName = 'Final.xlsx';
+    res.sendFile(fileName, options, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            console.log('Sent:', fileName);
+        }
+    });
 });
 
-// app.post('/submit',async(req,res)=>{
-  
-//   const subject=req.body
-//   console.log(subject)
-// })
+// app.get('/downloadExcel', (req, res, next) => {
+//   const excelFilePath = path.join(__dirname, '../Final.xlsx');
+//   console.log(excelFilePath)
+//   res.sendFile(excelFilePath, (err) => {
+//     if (err) console.log(err);
+//   });
+// });
 app.listen(port,()=>{
   console.log("Server is up on port "+ port)
 })

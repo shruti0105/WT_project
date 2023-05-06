@@ -1,10 +1,10 @@
 const reader= require('xlsx')
 
-const compute =function(h,m,l,co_final){
+const compute =function(h,m,l,co_final,filename){
   
-  let filename="file";
+  // let filename="UT1";
   let data=[]
-    const file=reader.readFile('publicfiles/' + filename + ".xlsx")
+    const file=reader.readFile('publicfiles/' + filename)
     const sheetNames=file.SheetNames
 
     for(let i=0;i<sheetNames.length;i++)
@@ -19,6 +19,7 @@ const compute =function(h,m,l,co_final){
 
     
     console.log(data)
+
     for (var key in data[0]) {
 
       
@@ -99,16 +100,16 @@ if(data[i][key]!=0 && data[i][key]!="")
     else{
       co_final[key]=co1_attainment;
     }
-    console.log(co1_dis);
-    console.log(co1_fc);
-    console.log(co1_pass);
-    console.log(co1_dis_perc);
-    console.log(co1_fc_perc);
-    console.log(co1_pass_perc);
-    console.log(co1_att_highl);
-   console.log(co1_att_midl);
-   console.log(co1_att_lowl);
-   console.log(co1_attainment);
+  //   console.log(co1_dis);
+  //   console.log(co1_fc);
+  //   console.log(co1_pass);
+  //   console.log(co1_dis_perc);
+  //   console.log(co1_fc_perc);
+  //   console.log(co1_pass_perc);
+  //   console.log(co1_att_highl);
+  //  console.log(co1_att_midl);
+  //  console.log(co1_att_lowl);
+  //  console.log(co1_attainment);
 
       
 }
