@@ -19,12 +19,13 @@ let firstclass= worksheet.getRow(6);
 let secondclass = worksheet.getRow(7);
 
 co.getCell(2).value =  co_final.CO1;
+co.getCell('B5').numFmt = '0.0000000000';
 co.getCell(3).value = co_final.CO2;
+co.getCell('C5').numFmt = '0.000000000';
 co.getCell(4).value = co_final.CO3;
 co.getCell(5).value = co_final.CO4;
 co.getCell(6).value = co_final.CO5;
 co.getCell(7).value =co_final.CO6;
-
 let avg=(co_final.CO1+co_final.CO2+co_final.CO3+co_final.CO4+co_final.CO5+co_final.CO6)/6
 co.getCell(8).value =avg
 
