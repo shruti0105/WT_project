@@ -88,7 +88,7 @@ let final=worksheet.getRow(17)
 final.getCell(7).value=avg*0.3+avg2*0.7
 final.commit() 
 
-let name="Final " +subject+ "attainment AY 2022-23";
+let name="Final " +subject+ " attainment AY 2022-23";
 
  await workbook.xlsx.writeFile('./'+name+ '.xlsx');
 

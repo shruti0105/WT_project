@@ -1,13 +1,16 @@
 const reader= require('xlsx')
 
-const compute =function(h,m,l,co_final,filename){
+const compute =function(h,m,l,co_final,filename,no,ut){
   
   // let filename="UT1";
+  console.log("no",no);
   let data=[]
+  console.log("file",filename)
     const file=reader.readFile('publicfiles/' + filename)
     const sheetNames=file.SheetNames
-
-    for(let i=0;i<sheetNames.length;i++)
+    console.log(no)
+    // sheetNames.splice(30, 1)
+    for(let i=0;i<no;i++)
     {
       const arr= reader.utils.sheet_to_json(file.Sheets[sheetNames[i]])
       arr.forEach((res)=>{
@@ -15,8 +18,8 @@ const compute =function(h,m,l,co_final,filename){
       })
     }
 
-    let count=data.length-1;
-
+  
+   let count=sheetNames.length-1;
     
     console.log(data)
 
@@ -26,13 +29,15 @@ const compute =function(h,m,l,co_final,filename){
     let co1_dis=0;
     let co1_fc=0;
     let co1_pass=0;
-    let total1=0
+    let total1=0;
+    
       if(key=="Roll No. / Max marks" || key=="Total")
       // console.log(data[0][key])
       {
         continue;
       }
       console.log(key);
+      console.log(ut[key]);
 
         for(let i=0;i<count;i++)
     {
