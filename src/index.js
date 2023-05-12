@@ -73,7 +73,7 @@ app.post('/submit',upload.array('upload',2), async(req,res)=>{
      CO5:req.body.CO5ut2,
      CO6:req.body.CO6ut2,
   }
-  compute(req.body.uth1,req.body.utm1,req.body.utl1,co_final,req.files[0].filename,req.body.no1,ut1)
+  // compute(req.body.uth1,req.body.utm1,req.body.utl1,co_final,req.files[0].filename,req.body.no1,ut1)
   compute(req.body.uth2,req.body.utm2,req.body.utl2,co_final,req.files[1].filename,req.body.no2,ut2)
   writeExcelFile(UA,co_final,req.body.subject)
   // compute(req.body.uth2,req.body.utm2,req.body.utl2,co_final)

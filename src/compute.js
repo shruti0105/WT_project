@@ -105,7 +105,7 @@ if(data[i][key]!=0 && data[i][key]!="")
     else{
       co_final[key]=co1_attainment;
     }
-  //   console.log(co1_dis);
+    console.log(co1_dis);
   //   console.log(co1_fc);
   //   console.log(co1_pass);
   //   console.log(co1_dis_perc);
