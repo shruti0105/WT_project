@@ -76,28 +76,26 @@ app.post('/submit',upload.array('upload',2), async(req,res)=>{
   compute(req.body.uth1,req.body.utm1,req.body.utl1,co_final,req.files[0].filename,req.body.no1,ut1)
   compute(req.body.uth2,req.body.utm2,req.body.utl2,co_final,req.files[1].filename,req.body.no2,ut2)
   writeExcelFile(UA,co_final,req.body.subject)
-
-   const options = {
-        root: path.join(__dirname ,"../")
-    };
- 
-    // const fileName = 'Final.xlsx';
-    // res.sendFile(fileName, options, function (err) {
-    //     if (err) {
-    //         next(err);
-    //     } else {
-    //         console.log('Sent:', fileName);
-    //     }
-    // });
-  // compute(req.body.uth2,req.body.utm2,req.body.utl2,co_final,req.files[1].filename)
+  // compute(req.body.uth2,req.body.utm2,req.body.utl2,co_final)
 },(error,req,res,next)=>{
    res.status(400).send({error:error.message})
 })
 
 
-// app.get('/downloadExcel', function (req, res,next) {
-  
-// });
+app.get('/downloadExcel', function (req, res,next) {
+    const options = {
+        root: path.join(__dirname ,"../")
+    };
+ 
+    const fileName = 'Final.xlsx';
+    res.sendFile(fileName, options, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            console.log('Sent:', fileName);
+        }
+    });
+});
 
 // app.get('/downloadExcel', (req, res, next) => {
 //   const excelFilePath = path.join(__dirname, '../Final.xlsx');
